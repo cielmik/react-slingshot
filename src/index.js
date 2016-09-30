@@ -1,22 +1,34 @@
-/* eslint-disable import/default */
-
 import React from 'react';
-import {render} from 'react-dom';
+import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router, browserHistory } from 'react-router';
-import routes from './routes';
-import configureStore from './store/configureStore';
-require('./favicon.ico'); // Tell webpack to load favicon.ico
-import './styles/styles.scss'; // Yep, that's right. You can import SASS/CSS files too! Webpack will run the associated loader and plug this into the page.
-import { syncHistoryWithStore } from 'react-router-redux';
+import { createStore, applyMiddleware } from 'redux';
+import { AppContainer } from 'react-hot-loader';
 
-const store = configureStore();
+import App from './components/app';
+import reducers from './reducers';
 
-// Create an enhanced history that syncs navigation events with the store
-const history = syncHistoryWithStore(browserHistory, store);
+const createStoreWithMiddleware = applyMiddleware()(createStore);
 
-render(
-  <Provider store={store}>
-    <Router history={history} routes={routes} />
-  </Provider>, document.getElementById('app')
-);
+const mountApp = document.querySelector('#app');
+
+ReactDOM.render(
+  <AppContainer>
+    <Provider store={createStoreWithMiddleware(reducers)}>
+      <App />
+    </Provider>
+  </AppContainer>
+  , mountApp);
+
+  if (module.hot) {
+    module.hot.accept('./components/app', () => {
+      const NextApp = require('./components/app').default;
+      ReactDOM.render(
+        <AppContainer>
+          <Provider store={createStoreWithMiddleware(reducers)}>
+            <NextApp />
+          </Provider>
+        </AppContainer>,
+        mountApp
+      );
+    });
+  }
