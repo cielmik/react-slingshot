@@ -9,26 +9,26 @@ import reducers from './reducers';
 
 const createStoreWithMiddleware = applyMiddleware()(createStore);
 
-const mountApp = document.querySelector('#app');
+function renderApp(RootComponent) {
+  const mountApp = document.querySelector('#app');
 
-ReactDOM.render(
-  <AppContainer>
-    <Provider store={createStoreWithMiddleware(reducers)}>
-      <App />
-    </Provider>
-  </AppContainer>
-  , mountApp);
-
-  if (module.hot) {
-    module.hot.accept('./components/app', () => {
-      const NextApp = require('./components/app').default;
-      ReactDOM.render(
-        <AppContainer>
-          <Provider store={createStoreWithMiddleware(reducers)}>
-            <NextApp />
-          </Provider>
-        </AppContainer>,
-        mountApp
-      );
-    });
+  if (mountApp) {
+    ReactDOM.render(
+      <AppContainer>
+        <Provider store={createStoreWithMiddleware(reducers)}>
+          <RootComponent />
+        </Provider>
+      </AppContainer>
+      , mountApp
+    );
   }
+}
+
+renderApp(App);
+
+if (module.hot) {
+  module.hot.accept(
+    './components/App',
+    () => renderApp(require('./components/App'))
+  );
+}
