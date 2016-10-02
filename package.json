@@ -90,6 +90,16 @@
     "webpack-hot-middleware": "2.12.2",
     "webpack-md5-hash": "0.0.5"
   },
+  "ava": {
+    "babel": "inherit",
+    "files": [
+      "src/**/*.test.js"
+    ],
+    "require": [
+      "babel-register",
+      "./tools/test-env.js"
+    ]
+  },
   "keywords": [
     "react",
     "reactjs",
@@ -108,15 +118,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/coryhouse/react-slingshot"
-  },
-  "ava": {
-    "babel": "inherit",
-    "files": [
-      "src/**/*.test.js"
-    ],
-    "require": [
-      "babel-register",
-      "./tools/test-env.js"
-    ]
   }
 }
