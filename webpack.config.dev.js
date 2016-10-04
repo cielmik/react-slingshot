@@ -11,11 +11,11 @@ export default {
   devtool: 'eval-source-map', // more info:https://webpack.github.io/docs/build-performance.html#sourcemaps and https://webpack.github.io/docs/configuration.html#devtool
   noInfo: true, // set to false to see a list of every file being bundled.
   entry: [
-    'react-hot-loader/patch',
     // must be first entry to properly set public path
     './src/webpack-public-path',
     'webpack-hot-middleware/client?reload=true',
-    path.resolve(__dirname, 'src/index.js') // Defining path seems necessary for this to work consistently on Windows machines.
+    path.resolve(__dirname, 'src/index.js'), // Defining path seems necessary for this to work consistently on Windows machines.
+    'react-hot-loader/patch',
   ],
   target: 'web', // necessary per https://webpack.github.io/docs/testing.html#compile-and-test
   output: {
